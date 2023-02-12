@@ -5,7 +5,7 @@ import { BellIcon, BookmarkIcon, ClipboardCheckIcon, DotsCircleHorizontalIcon, H
 
 const Sidebar = () => {
   return (
-    <div className=' sm:flex flex-col p-2 lg:items-start  h-full'>
+    <div className=' sm:flex flex-col p-2 lg:items-start  h-full lg:ml-24 '>
       {/* logo */}
       <div className='hoverEffect p-0' >
      <Image src="/favicon.png" alt="logo" width={50} height={50}/>  
