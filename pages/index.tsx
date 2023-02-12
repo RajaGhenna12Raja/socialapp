@@ -6,7 +6,7 @@ import Widgets from '../components/Widgets'
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function Home({newsResults}) {
+export default function Home({newsResults, randomUsersResults}) {
   return (
     <>
       <Head>
@@ -23,7 +23,7 @@ export default function Home({newsResults}) {
         <Feed />
 
         {/* widget */}
-        <Widgets  newsResults = {newsResults.articles}/>
+        <Widgets  newsResults = {newsResults.articles} randomUsersResults={randomUsersResults.results}/>
 
 
         {/*modal  */}
@@ -34,15 +34,20 @@ export default function Home({newsResults}) {
 }
 
 //https://saurav.tech/NewsAPI/top-headlines/category/business/us.json
-
-
 export async function getServerSideProps() {
   const newsResults = await fetch(
     "https://saurav.tech/NewsAPI/top-headlines/category/business/us.json"
   ).then((res)  => res.json());
+
+  //  who to follow 
+
+  const randomUsersResults = await fetch(
+    "https://randomuser.me/api/?results=100&inc=name,login,picture"
+  ).then((res) =>res.json());
   return{
     props:{
        newsResults,
+       randomUsersResults,
     },
   }
 }
