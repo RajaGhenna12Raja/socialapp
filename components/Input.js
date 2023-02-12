@@ -19,7 +19,7 @@ export const Input = () => {
                             <div>Body element to collapse</div>
                         </Accordion.Collapse>'/>
                      </div>
-                     <button className='bg-red-600 text-white px-4 py-1.5 rounded-full hover:bg-black font-bold shadow-md  disabled:opacity-50 '>Tweet</button>
+                     <button className='bg-red-600 text-white px-4 py-1.5 rounded-full hover:bg-black font-bold shadow-md  disabled:opacity-50'>Tweet</button>
                 </div>
             </div>
         </div>
