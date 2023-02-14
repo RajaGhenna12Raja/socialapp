@@ -19,7 +19,7 @@ function Post({post}) {
          <span className='text-sm sm:text-[15px]'>@{post.data().username} - </span>
          <span className='text-sm sm:text-[15px] hover:underline'>
              <Moments  fromNow>
-               {post?.timestamp?.toDate()}
+               {post?.data()?.timestamp?.toDate()}
             </Moments> 
         </span>
           </div>
