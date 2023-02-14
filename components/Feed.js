@@ -1,29 +1,23 @@
 import { SparklesIcon } from '@heroicons/react/solid'
-import React from 'react'
+import React, { useEffect } from 'react'
 import {Input} from "./Input"
 import Post from '../components/Post'
+import { useState } from 'react'
+import { collection, onSnapshot, orderBy, query } from 'firebase/firestore'
+import { db } from '@/firebase'
 
 export const Feed = () => {
-  const posts = [
-    {
-       id: "1",
-       name: "RajaGhenna",
-      username: "bhatti@Raja",
-       userImg: "/images/profile.jpg",
-       img: "https://images.unsplash.com/photo-1586348943529-beaae6c28db9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1015&q=80",
-       text: "nice view",
-       timestamp: "2 hours ago"
-    },
-    {
-      id: "2",
-      name: "RajaGhenna",
-      username: "bhatti@Raja",
-      userImg: "/images/ginny.jpg",
-      img: "https://images.unsplash.com/photo-1503104834685-7205e8607eb9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8Z2lybHN8ZW58MHx8MHx8&auto=format&fit=crop&w=1000&q=60",
-      text: "beauty lips",
-      timestamp: "1 hours ago"
-   },
-  ]
+  const [posts, setPosts] = useState([])
+   useEffect(
+    () =>
+     onSnapshot(
+      query(collection(db, "posts"), orderBy ("timestamp", "desc")),  
+         (snapshot) => {
+          setPosts (snapshot.docs);
+           }
+      ),
+     [ ]
+);
   return (
     <div className='ml-1 xl:ml-[300px] border-l border-r border-gray-200  xl:min-w-[400px] sm:ml-[43px] flex-grow max-w-xl'>
         <div className=' flex py-2 px-3 sticky top-0 z-50 bg-white border-b border-gray-200 '>
