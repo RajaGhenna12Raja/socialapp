@@ -24,7 +24,7 @@ export default function Home({newsResults, randomUsersResults}) {
 
         {/* widget */}
         <Widgets  newsResults = {newsResults.articles} randomUsersResults={randomUsersResults.results}/>
-
+        
 
         {/*modal  */}
 
@@ -46,8 +46,8 @@ export async function getServerSideProps() {
   ).then((res) =>res.json());
   return{
     props:{
-       newsResults,
-       randomUsersResults,
+      newsResults,
+      randomUsersResults,
     },
   }
 }
