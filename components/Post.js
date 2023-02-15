@@ -1,39 +1,50 @@
 import { ChartBarIcon, ChatIcon, DotsHorizontalIcon, HeartIcon, ShareIcon, TrashIcon } from '@heroicons/react/solid'
-import { doc, setDoc } from 'firebase/firestore'
+import { collection, deleteDoc, doc, onSnapshot, setDoc } from 'firebase/firestore'
 import React, { useEffect } from 'react'
 import Moments from 'react-moment'
 import { useSession } from 'next-auth/react'
 import { db } from '@/firebase'
-import { useState } from 'react'
+import { useState} from 'react'
+import {HeartIcon as HeartIconFilled} from '@heroicons/react/outline'
+import { signIn } from 'next-auth/react'
 
 function Post({post}) {
- const {data : session} = useSession();
+ const {data : session} = useSession()
  const [likes, setLikes] = useState( [ ] )
+ const [hasLiked, setHasLiked] = useState( [ false] )
 
 useEffect(() => {
-  first
+  const unsubscribe = onSnapshot(
+    collection ( db,  "posts",  post.id,  "likes" ), 
+    (snapshot) => setLikes ( snapshot.docs )
+  );
+},  [ db ] );
 
-  return () => {
-    second
-  }
-}, [third])
+useEffect (() =>{
+    setHasLiked ( likes.findIndex ((like) => like.id  === session?.user.uid) !== -1)
+}, [ likes ] )
 
-
-  async function likePost() {
-    await setDoc (doc(db, "posts", post.id, "likes", session.user.uid ),{
+async function likePost () {
+    if (session) {
+      if (hasLiked)  {
+     await deleteDoc(doc(db, "posts" ,  post.id,  "likes",  session?.user.uid))
+    }else{
+         await setDoc (doc (db, "posts", post.id, "likes",  session?.user.uid ), {
       username: session.user.username,
     })
-  }
+    }
+    } else {
+       signIn()
+    }
 
+  }
   return (
     <div className='flex p-3  cursor-pointer border-b border-gray-300'>
       {/*User  image */}
     <img className='h-11 w-11 rounded-full mr-4 ' src={post.data().userImg} alt="user-img"/>
-
       {/* right side */}
       <div className=''>
         {/* header */}
-
         <div className='flex items-center justify-between'>
           {/* post user info */}
           <div className='flex items-center space-x-1 whitespace-nowrap'>
@@ -56,12 +67,25 @@ useEffect(() => {
        <div className='flex justify-between text-gray-500 p-2  '>
        <ChatIcon className='h-9 w-9 hoverEffect p-2 hover:text-white hover:bg-red-600 '/>
        <TrashIcon className='h-9 w-9 hoverEffect p-2 hover:text-white hover:bg-red-600  '/>
-       <HeartIcon onClick= {likePost} className='h-9 w-9 hoverEffect p-2 hover:text-white hover:bg-red-600 '/>
+         <div className='flex items-center '>
+          { hasLiked ? ( <HeartIconFilled 
+         onClick= {likePost} 
+         className='h-9 w-9 hoverEffect p-2 hover:text-white bg-red-600 text-white '/>
+         ): (
+        <HeartIcon 
+        onClick= {likePost} 
+        className='h-9 w-9 hoverEffect p-2 hover:text-white hover:bg-red-600 '/>
+        )}
+        {
+          likes.length > 0 && (
+            <span className={`${hasLiked && 'text-red-600 ml-2' } text-sm select-none`}>{likes.length}</span>
+          )
+        }
+         </div>
        <ShareIcon className='h-9 w-9 hoverEffect p-2 hover:text-white hover:bg-red-600  '/>
        <ChartBarIcon className='h-9 w-9 hoverEffect p-2  hover:text-white hover:bg-red-600  '/>
        </div>
       </div>
-
     </div>
   )
 }
