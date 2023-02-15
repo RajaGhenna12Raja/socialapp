@@ -52,7 +52,7 @@ return (
 <>
 {session  &&  (
 <div className='flex border-b border-gray-300 p-3 space-x-3'>
-<Image onClick={signOut} className='rounded-full cursor-pointer hover:brightness-95'  src={session.user.image}  alt="userImage"  height={50} width={50}/>
+<Image onClick={signOut} className='rounded-full cursor-pointer hover:brightness-95 top-0 sticky'  src={session.user.image}  alt="userImage"  height={50} width={50}/>
 <div className='w-full divide-y divide-gray-300'>
 <div className=''>
 <textarea value={input} onChange={(e) =>setInput(e.target.value)} className='w-full border-none focus:ring-0 text-lg  placeholder:gray-700 tracking-wide min-h-[50px] text-gray-700 ' rows='2'  placeholder='Share Your Thoughts'/>

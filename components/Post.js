@@ -1,8 +1,30 @@
 import { ChartBarIcon, ChatIcon, DotsHorizontalIcon, HeartIcon, ShareIcon, TrashIcon } from '@heroicons/react/solid'
-import React from 'react'
+import { doc, setDoc } from 'firebase/firestore'
+import React, { useEffect } from 'react'
 import Moments from 'react-moment'
+import { useSession } from 'next-auth/react'
+import { db } from '@/firebase'
+import { useState } from 'react'
 
 function Post({post}) {
+ const {data : session} = useSession();
+ const [likes, setLikes] = useState( [ ] )
+
+useEffect(() => {
+  first
+
+  return () => {
+    second
+  }
+}, [third])
+
+
+  async function likePost() {
+    await setDoc (doc(db, "posts", post.id, "likes", session.user.uid ),{
+      username: session.user.username,
+    })
+  }
+
   return (
     <div className='flex p-3  cursor-pointer border-b border-gray-300'>
       {/*User  image */}
@@ -19,7 +41,7 @@ function Post({post}) {
          <span className='text-sm sm:text-[15px]'>@{post.data().username} - </span>
          <span className='text-sm sm:text-[15px] hover:underline'>
              <Moments  fromNow>
-               {post?.data()?.timestamp?.toDate()}
+               {post?.data().timestamp?.toDate()}
             </Moments> 
         </span>
           </div>
@@ -34,7 +56,7 @@ function Post({post}) {
        <div className='flex justify-between text-gray-500 p-2  '>
        <ChatIcon className='h-9 w-9 hoverEffect p-2 hover:text-white hover:bg-red-600 '/>
        <TrashIcon className='h-9 w-9 hoverEffect p-2 hover:text-white hover:bg-red-600  '/>
-       <HeartIcon className='h-9 w-9 hoverEffect p-2 hover:text-white hover:bg-red-600 '/>
+       <HeartIcon onClick= {likePost} className='h-9 w-9 hoverEffect p-2 hover:text-white hover:bg-red-600 '/>
        <ShareIcon className='h-9 w-9 hoverEffect p-2 hover:text-white hover:bg-red-600  '/>
        <ChartBarIcon className='h-9 w-9 hoverEffect p-2  hover:text-white hover:bg-red-600  '/>
        </div>
