@@ -3,10 +3,11 @@ import { collection, deleteDoc, doc, onSnapshot, setDoc } from 'firebase/firesto
 import React, { useEffect } from 'react'
 import Moments from 'react-moment'
 import { useSession } from 'next-auth/react'
-import { db } from '@/firebase'
+import { db, storage } from '@/firebase'
 import { useState} from 'react'
 import {HeartIcon as HeartIconFilled} from '@heroicons/react/outline'
 import { signIn } from 'next-auth/react'
+import { deleteObject, ref } from 'firebase/storage'
 
 function Post({post}) {
  const {data : session} = useSession()
@@ -36,8 +37,13 @@ async function likePost () {
     } else {
        signIn()
     }
-
   }
+
+  async function deletePost() {
+   deleteDoc(doc(db, "posts", post?.id))
+   deleteObject(ref(storage, `posts/${post?.id}/image`))
+  }
+
   return (
     <div className='flex p-3  cursor-pointer border-b border-gray-300'>
       {/*User  image */}
@@ -66,7 +72,9 @@ async function likePost () {
        {/* icons */}
        <div className='flex justify-between text-gray-500 p-2  '>
        <ChatIcon className='h-9 w-9 hoverEffect p-2 hover:text-white hover:bg-red-600 '/>
-       <TrashIcon className='h-9 w-9 hoverEffect p-2 hover:text-white hover:bg-red-600  '/>
+        {session?.user.uid === post?.data().id && (
+          <TrashIcon onClick={deletePost} className='h-9 w-9 hoverEffect p-2 hover:text-white hover:bg-red-600  '/>
+         )}
          <div className='flex items-center '>
           { hasLiked ? ( <HeartIconFilled 
          onClick= {likePost} 
