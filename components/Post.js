@@ -40,10 +40,12 @@ async function likePost () {
   }
 
   async function deletePost() {
-   deleteDoc(doc(db, "posts", post?.id))
-   deleteObject(ref(storage, `posts/${post?.id}/image`))
+    if (window.confirm('Are you Sure to Delete the Post')) {
+      deleteDoc(doc(db, "posts", post?.id))
+      deleteObject(ref(storage, `posts/${post?.id}/image`))
+    }
   }
-
+  
   return (
     <div className='flex p-3  cursor-pointer border-b border-gray-300'>
       {/*User  image */}
