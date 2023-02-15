@@ -34,7 +34,7 @@ async function likePost () {
      await deleteDoc(doc(db, "posts" ,  post.id,  "likes",  session?.user.uid))
     }else{
          await setDoc (doc (db, "posts", post.id, "likes",  session?.user.uid ), {
-      username: session.user.username,
+      username :  session.user.username,
     })
     }
     } else {
